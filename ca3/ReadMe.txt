@@ -1,3 +1,8 @@
+ cuda
+ dxva2
+ qsv
+ d3d11va
+
         public static Bitmap ReadBitmapFromPPM(string file)
         {
             var reader = new BinaryReader(new FileStream(file, FileMode.Open));

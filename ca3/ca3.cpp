@@ -7,7 +7,9 @@ extern "C"{
 #include "libavformat\avformat.h"
 #include "libavutil\pixfmt.h"
 #include "libswscale\swscale.h"
+#include "libavutil\hwcontext.h"
 }
+#include "ca3.h"
 
 void SaveFrame(AVFrame *pFrame, int width, int height, int iFrame) 
 {
@@ -21,7 +23,7 @@ void SaveFrame(AVFrame *pFrame, int width, int height, int iFrame)
 }
 void test()
 {
-	char *fn = "C:\\logs\\SampleVideo_720x480_2mb.mp4";
+	char *fn = "C:\\tools\\data\\The Simpsons Movie - Trailer.mp4";
 	AVFormatContext *pFormatCtx = NULL;
 	if (avformat_open_input(&pFormatCtx, fn, NULL, 0) != 0)
 		return;
@@ -44,6 +46,10 @@ void test()
 		pCodec = avcodec_find_decoder(video_stream->codec->codec_id);
 		if (pCodec == NULL) 
 			return;
+
+		//if (hw_decoder_init(pCodecCtx, type) < 0)
+		//	return -1;
+
 		//AVCodecContext *pCodecCtx = avcodec_alloc_context3(pCodec);
 		if (avcodec_open2(pCodecCtx, pCodec, 0) < 0)
 			return;
@@ -97,7 +103,16 @@ void test()
 int _tmain(int argc, _TCHAR* argv[])
 {
 	avcodec_register_all();
+	//enum AVHWDeviceType type = AV_HWDEVICE_TYPE_NONE;
+	//while ((type = av_hwdevice_iterate_types(type)) != AV_HWDEVICE_TYPE_NONE)
+	//{
+	//	fprintf(stderr, " %s\n", av_hwdevice_get_type_name(type));
+	//}
 	test();
+	//char* p[] = {"test", "dxva2",
+	//	"C:\\tools\\data\\The Simpsons Movie - Trailer.mp4","C:\\tools\\logs\\images\\test.raw"};
+	//test_main(4, p);
+
 	return 0;
 }
 
